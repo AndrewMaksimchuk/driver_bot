@@ -1,7 +1,9 @@
 import { IUpdate, IUser } from "./types.ts";
 import db from "./database.ts";
-import dbTables, { usersColumns } from "./databaseTables.ts";
+import dbTables, { usersColumns, TTrafficRuleRow } from "./databaseTables.ts";
 import { pipe } from "https://deno.land/x/ramda@v0.27.2/mod.ts";
+import { usersColumnsKeys, TUserRow } from "./databaseTables.ts";
+import { sendMessage } from "./methods.ts";
 
 const isNewUser = (updateItem: IUpdate) =>
   updateItem.message?.text === "/start";
@@ -19,10 +21,37 @@ const addNewUsers = (users: IUser[]) => {
 
 const setNewUsers = pipe(getNewUsers, addNewUsers);
 
-const getAllUsers = () => db.selectAll(dbTables.users);
+const arrToObj = (user: TUserRow) =>
+  user.reduce(
+    (previusValue, currentValue, currentIndex) => ({
+      ...previusValue,
+      [usersColumnsKeys[currentIndex]]: currentValue,
+    }),
+    {}
+  ) as IUser;
+
+const mapArrToObjUser = (users: TUserRow[]) => users.map(arrToObj);
+
+const getAllUsers = () => {
+  const users = db.selectAll<TUserRow>(dbTables.users);
+  return mapArrToObjUser(users);
+};
+
+const sendTextMessageForAll = (text: string) => getAllUsers().forEach(user => sendMessage({ chat_id: user.id, text }));
+
+const getTrafficRule = () => {
+  const rules = db.selectAll<TTrafficRuleRow>(dbTables.traffic_rules);
+  const rulesLength = rules.length;
+  const randomIndex = Math.floor(Math.random() * rulesLength);
+  const rule = rules[randomIndex];
+  return `${rule[1]}\n${rule[2]}`;
+};
+
+const sendTrafficRule = () => sendTextMessageForAll(getTrafficRule());
 
 export default {
   getNewUsers,
   setNewUsers,
   getAllUsers,
+  sendTrafficRule,
 };

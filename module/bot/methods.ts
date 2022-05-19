@@ -16,10 +16,5 @@ export const getUpdates = async (query?: IGetUpdates) => {
     : await httpClient.get<IUpdate>(setUrl("getUpdates"));
 };
 
-// type TSendMessageHandler = (query: ISendMessage) => Promise<IMessage>;
-// export const sendMessage: TSendMessageHandler = async (query) =>
-//   await (await fetch(setUrl("sendMessage", query))).json();
-
-// type TSendMessageHandler = (query: ISendMessage) => Promise<IMessage>;
 export const sendMessage = async (query: ISendMessage) =>
   await httpClient.get<IMessage>(setUrl("sendMessage", query));

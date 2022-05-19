@@ -10,8 +10,8 @@ class Sqlite {
     this.db = new DB(dbName);
   }
 
-  private setQuery(sql: string) {
-    return this.db.query(sql);
+  private setQuery<T extends unknown[]>(sql: string) {
+    return this.db.query<T>(sql);
   }
 
   private setColumnQuery(columnList: TTableColumnList) {
@@ -43,11 +43,11 @@ class Sqlite {
     return values.map(insertRow);
   }
 
-  public selectAll(table: string) {
+  public selectAll<T extends unknown[]>(table: string) {
     const query = `
     SELECT * FROM ${table}
     `;
-    return this.setQuery(query);
+    return this.setQuery<T>(query);
   }
 
   public selectColumn(table: string, column: string | string[]) {
@@ -85,12 +85,3 @@ class Sqlite {
 const db = new Sqlite(DATABASE_NAME);
 
 export default db;
-
-// TESTS
-// console.log(db.createTable("user", columnQuery));
-// console.log(db.insert('user', ['name'], [['andrew'], ['rom']]));
-// console.log(db.selectAll('user'));
-// console.log(db.selectColumn('user', 'name'));
-// console.log(db.selectColumns('people', ['name', 'age']));
-// console.log(db.deleteAll('people'));
-// console.log(db.deleteById('people', 41));
