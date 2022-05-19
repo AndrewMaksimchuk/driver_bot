@@ -1,9 +1,9 @@
-import { IUpdate, IUser } from "./types.ts";
+import { IUpdate, IUser } from "./bot_api_types.ts";
 import db from "./database.ts";
 import dbTables, { usersColumns, TTrafficRuleRow } from "./databaseTables.ts";
 import { pipe } from "https://deno.land/x/ramda@v0.27.2/mod.ts";
 import { usersColumnsKeys, TUserRow } from "./databaseTables.ts";
-import { sendMessage } from "./methods.ts";
+import { sendMessage } from "./bot_api_methods.ts";
 
 const isNewUser = (updateItem: IUpdate) =>
   updateItem.message?.text === "/start";
@@ -48,6 +48,16 @@ const getTrafficRule = () => {
 };
 
 const sendTrafficRule = () => sendTextMessageForAll(getTrafficRule());
+
+//for all user at once! 
+// TODO: send random road sign with description
+// const sendRoadSign = () => '';
+
+// TODO: send random road marking with description
+// const sendRoadMarking = () => '';
+
+// TODO: send one off rule or sign or road markings and other...
+// const sendOneOff = () => '';
 
 export default {
   getNewUsers,

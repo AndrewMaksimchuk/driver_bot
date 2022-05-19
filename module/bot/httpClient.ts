@@ -1,4 +1,4 @@
-import { TResponse } from './types.ts';
+import { TResponse } from './bot_api_types.ts';
 
 export const get = async <T>(input: string): Promise<TResponse<T>> => {
     const response = await fetch(input);

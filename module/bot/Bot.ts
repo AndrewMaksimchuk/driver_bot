@@ -1,9 +1,9 @@
-import { IUpdate } from "./types.ts";
+import { IUpdate } from "./bot_api_types.ts";
 import db from "./database.ts";
 import dbTables from "./databaseTables.ts";
 import User from "./User.ts";
 import Log from "./Log.ts";
-import { getUpdates } from "./methods.ts";
+import { getUpdates } from "./bot_api_methods.ts";
 
 const setOffsetUpdate = (lastResult: IUpdate) =>
   db.insert(dbTables.bot, ["offset"], [[`${lastResult.update_id + 1}`]]);
