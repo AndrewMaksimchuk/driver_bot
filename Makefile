@@ -1,6 +1,6 @@
 bot:
 	clear
-	@deno run --allow-net --allow-read --allow-write --allow-env=DRIVE_BOT bot.ts
+	@deno run --allow-net --allow-read --allow-write --allow-env=DRIVER_BOT bot.ts
 
 parser:
 	clear
