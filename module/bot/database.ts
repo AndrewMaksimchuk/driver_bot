@@ -1,7 +1,14 @@
 import { DB } from "https://deno.land/x/sqlite@v3.4.0/mod.ts";
-import { DATABASE_NAME } from "./settings.ts";
+import { DATABASE } from "./settings.ts";
 
 type TTableColumnList = Record<string, string>;
+
+interface IUpdateColumn {
+  table: string;
+  id: string | number;
+  column: string;
+  value: string | number;
+}
 
 class Sqlite {
   private db: DB;
@@ -69,10 +76,19 @@ class Sqlite {
     this.setQuery(query);
   }
 
-  public deleteById(table: string, id: number) {
+  public deleteById(table: string, id: string | number) {
     const query = `
       DELETE FROM ${table}
       WHERE id = ${id};
+    `;
+    return this.setQuery(query);
+  }
+
+  public updateColumn(params: IUpdateColumn) {
+    const query = `
+    UPDATE ${params.table}
+    SET ${params.column} = '${params.value}'
+    WHERE id = ${params.id}; 
     `;
     return this.setQuery(query);
   }
@@ -82,6 +98,12 @@ class Sqlite {
   }
 }
 
-const db = new Sqlite(DATABASE_NAME);
+if (DATABASE === undefined) {
+  throw new Error(
+    `Неможливо підключитися до бази данних.\n Відсутнє значання змінної навколишнього середовища "DATABASE"!\n`
+  );
+}
+
+const db = new Sqlite(DATABASE);
 
 export default db;

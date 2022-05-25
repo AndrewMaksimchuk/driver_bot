@@ -1,9 +1,9 @@
 export interface IResponseSuccess<T> {
   ok: true;
-  result: T[];
+  result: T
 }
 
-export interface IResponseError { 
+export interface IResponseError {
   ok: false;
   description: string;
   error_code: number;
@@ -244,7 +244,7 @@ export interface IMessage {
   video_chat_ended?: VideoChatEnded;
   video_chat_participants_invited?: VideoChatParticipantsInvited;
   web_app_data?: WebAppData;
-  reply_markup?: InlineKeyboardMarkup;
+  reply_markup?: IInlineKeyboardMarkup;
 }
 
 export interface IChat {
@@ -576,7 +576,7 @@ export interface LoginUrl {
 
 export type CallbackGame = () => void;
 
-export interface InlineKeyboardButton {
+export interface IInlineKeyboardButton {
   text: string;
   url?: string;
   callback_data?: string;
@@ -600,11 +600,11 @@ export interface KeyboardButton {
   web_app?: WebAppInfo;
 }
 
-export interface InlineKeyboardMarkup {
-  inline_keyboard: Array<InlineKeyboardButton[]>;
+export interface IInlineKeyboardMarkup {
+  inline_keyboard: Array<IInlineKeyboardButton[]>;
 }
 
-export interface ReplyKeyboardMarkup {
+export interface IReplyKeyboardMarkup {
   keyboard: Array<KeyboardButton[]>;
   resize_keyboard?: boolean;
   one_time_keyboard?: boolean;
@@ -612,12 +612,12 @@ export interface ReplyKeyboardMarkup {
   selective?: boolean;
 }
 
-export interface ReplyKeyboardRemove {
+export interface IReplyKeyboardRemove {
   remove_keyboard: true;
   selective?: boolean;
 }
 
-export interface ForceReply {
+export interface IForceReply {
   force_reply: true;
   input_field_placeholder?: string;
   selective?: boolean;
@@ -634,8 +634,29 @@ export interface ISendMessage {
   reply_to_message_id?: number;
   allow_sending_without_reply?: boolean;
   reply_markup?:
-    | InlineKeyboardMarkup
-    | ReplyKeyboardMarkup
-    | ReplyKeyboardRemove
-    | ForceReply;
+    | IInlineKeyboardMarkup
+    | IReplyKeyboardMarkup
+    | IReplyKeyboardRemove
+    | IForceReply;
+}
+
+// This object represents the contents of a file to be uploaded. 
+// Must be posted using multipart/form-data in the usual way that files are uploaded via the browser.
+export type IInputFile = File;
+
+export interface ISendPhoto {
+  chat_id: number | string;
+  photo: IInputFile | string;
+  caption?: string;
+  parse_mode?: string;
+  caption_entities?: IMessageEntity[];
+  disable_notification?: boolean;
+  protect_content?: boolean;
+  reply_to_message_id?: number;
+  allow_sending_without_reply?: boolean;
+  reply_markup?:
+    | IInlineKeyboardMarkup
+    | IReplyKeyboardMarkup
+    | IReplyKeyboardRemove
+    | IForceReply;
 }

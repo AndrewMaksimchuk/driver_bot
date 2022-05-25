@@ -2,3 +2,7 @@
 *.db
 *.json
 *.log
+*.png
+*.jpg
+
+test.ts

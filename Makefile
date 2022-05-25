@@ -5,3 +5,7 @@ bot:
 parser:
 	clear
 	@deno run --allow-net --allow-read --allow-write parser.ts
+
+test-ideas:
+	clear
+	@deno run --allow-net --allow-read test.ts

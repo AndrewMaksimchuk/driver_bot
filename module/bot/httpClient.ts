@@ -1,21 +1,31 @@
-import { TResponse } from './bot_api_types.ts';
+import { TResponse, IMessage } from "./bot_api_types.ts";
+import Log from "./Log.ts";
 
-export const get = async <T>(input: string): Promise<TResponse<T>> => {
-    const response = await fetch(input);
-    // if (response.status === 200) {
-    //     const data = await response.json() as IResponseSuccess<T>;
-    //     return data;
-    // }
-    // const data = await response.json() as IResponseError;
-    // return data;
+export const get = async <T = IMessage>(url: string): Promise<TResponse<T>> => {
+  const response = await fetch(url);
+  const responseData = await response.json();
 
-    // return response.status === 200
-    //     ? await response.json() as IResponseSuccess<T>
-    //     : await response.json() as IResponseError;
+  Log.log(responseData);
+  return responseData;
+};
 
-    return await response.json();
+export const post = async <T = IMessage>(
+  url: string,
+  body: FormData
+): Promise<TResponse<T>> => {
+  const init: RequestInit = {
+    method: "POST",
+    body,
+  };
+
+  const response = await fetch(url, init);
+  const responseData = await response.json();
+
+  Log.log(responseData);
+  return responseData;
 };
 
 export default {
-    get,
-}
+  get,
+  post,
+};
