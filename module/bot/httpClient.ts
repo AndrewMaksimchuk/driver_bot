@@ -1,4 +1,4 @@
-import { TResponse, IMessage } from "./bot_api_types.ts";
+import { IMessage, TResponse } from "./bot_api_types.ts";
 import Log from "./Log.ts";
 
 export const get = async <T = IMessage>(url: string): Promise<TResponse<T>> => {
@@ -11,7 +11,7 @@ export const get = async <T = IMessage>(url: string): Promise<TResponse<T>> => {
 
 export const post = async <T = IMessage>(
   url: string,
-  body: FormData
+  body: FormData,
 ): Promise<TResponse<T>> => {
   const init: RequestInit = {
     method: "POST",

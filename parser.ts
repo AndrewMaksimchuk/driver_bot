@@ -6,5 +6,5 @@ import output from "./module/core/output.ts";
 try {
   pipe(input, processing, output)();
 } catch (error) {
-  Deno.writeTextFileSync('PARSER_ERROR.log', error + '\n', {append: true});
+  Deno.writeTextFileSync("PARSER_ERROR.log", error + "\n", { append: true });
 }

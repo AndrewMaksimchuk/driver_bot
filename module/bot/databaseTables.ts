@@ -47,7 +47,7 @@ export type TUserRow = [
   first_name: string,
   last_name?: string,
   username?: string,
-  language_code?: string
+  language_code?: string,
 ];
 db.createTable(tables.users, usersColumns);
 
@@ -83,7 +83,7 @@ export type TTestPdrRow = [
   number_1: number,
   qustion_2: string,
   answer_3: string,
-  images_4: string // as json in string type
+  images_4: string, // as json in string type
 ];
 
 const testPdrColumns: Record<keyof ITestPdr, string> = {
@@ -127,7 +127,7 @@ export type TRoadSign = [
   number_2: string,
   description_3: string,
   file_id_4: string,
-  photo_name_5: string
+  photo_name_5: string,
 ];
 
 export const roadKeys = [

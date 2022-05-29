@@ -1,24 +1,31 @@
 import type {
-  IUser,
+  IGetChatMenuButton,
   IGetUpdates,
-  IUpdate,
   ISendMessage,
   ISendPhoto,
+  ISetChatMenuButton,
+  ISetMyCommands,
+  IUpdate,
+  IUser,
 } from "./bot_api_types.ts";
-import { setUrl } from "./helpers.ts";
+import { setKeyValueToString, setUrl } from "./helpers/index.ts";
 import httpClient from "./httpClient.ts";
 
+/** getMe */
 export const getMe = async () => await httpClient.get<IUser>(setUrl("getMe"));
 
+/** getUpdates */
 export const getUpdates = async (query?: IGetUpdates) => {
   return query
     ? await httpClient.get<IUpdate[]>(setUrl("getUpdates", query))
     : await httpClient.get<IUpdate[]>(setUrl("getUpdates"));
 };
 
+/** sendMessage */
 export const sendMessage = async (query: ISendMessage) =>
   await httpClient.get(setUrl("sendMessage", query));
 
+/** sendPhoto */
 export const sendPhoto = async (query: ISendPhoto) => {
   const body = new FormData();
   body.append("chat_id", query.chat_id.toString());
@@ -26,3 +33,93 @@ export const sendPhoto = async (query: ISendPhoto) => {
   query.caption && body.append("caption", query.caption);
   return await httpClient.post(setUrl("sendPhoto"), body);
 };
+
+// logOut
+// close
+// Formatting options
+// forwardMessage
+// copyMessage
+// sendAudio
+// sendDocument
+// sendVideo
+// sendAnimation
+// sendVoice
+// sendVideoNote
+// sendMediaGroup
+// sendLocation
+// editMessageLiveLocation
+// stopMessageLiveLocation
+// sendVenue
+// sendContact
+// sendPoll
+// sendDice
+// sendChatAction
+// getUserProfilePhotos
+// getFile
+// banChatMember
+// unbanChatMember
+// restrictChatMember
+// promoteChatMember
+// setChatAdministratorCustomTitle
+// banChatSenderChat
+// unbanChatSenderChat
+// setChatPermissions
+// exportChatInviteLink
+// createChatInviteLink
+// editChatInviteLink
+// revokeChatInviteLink
+// approveChatJoinRequest
+// declineChatJoinRequest
+// setChatPhoto
+// deleteChatPhoto
+// setChatTitle
+// setChatDescription
+// pinChatMessage
+// unpinChatMessage
+// unpinAllChatMessages
+// leaveChat
+// getChat
+// getChatAdministrators
+// getChatMemberCount
+// getChatMember
+// setChatStickerSet
+// deleteChatStickerSet
+// answerCallbackQuery
+
+// setMyCommands
+// export const setMyCommands = async (query: ISetMyCommands) => {
+//   interface TPreparedQuery {
+//     commands: string;
+//     scope?: string;
+//     language_code?: string;
+//   }
+
+//   const preparedQuery: TPreparedQuery = setKeyValueToString(query);
+
+//   return await httpClient.get(setUrl("setMyCommands", preparedQuery));
+// };
+
+// deleteMyCommands
+// getMyCommands
+
+/** setChatMenuButton */
+export const setChatMenuButton = async (query?: ISetChatMenuButton) => {
+  const response = query?.menu_button
+    ? await httpClient.get(
+      setUrl("setChatMenuButton", {
+        ...query,
+        menu_button: JSON.stringify(query.menu_button),
+      }),
+    )
+    : await httpClient.get(setUrl("setChatMenuButton", query));
+
+  return response;
+};
+
+/** getChatMenuButton */
+export const getChatMenuButton = async (query?: IGetChatMenuButton) =>
+  await httpClient.get(setUrl("getChatMenuButton", query));
+
+// setMyDefaultAdministratorRights
+// getMyDefaultAdministratorRights
+// Inline mode methods

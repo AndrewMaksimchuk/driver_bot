@@ -1,6 +1,6 @@
 export interface IResponseSuccess<T> {
   ok: true;
-  result: T
+  result: T;
 }
 
 export interface IResponseError {
@@ -563,7 +563,7 @@ export interface IMessageEntity {
   language?: string;
 }
 
-export interface WebAppInfo {
+export interface IWebAppInfo {
   url: string;
 }
 
@@ -580,7 +580,7 @@ export interface IInlineKeyboardButton {
   text: string;
   url?: string;
   callback_data?: string;
-  web_app?: WebAppInfo;
+  web_app?: IWebAppInfo;
   login_url?: LoginUrl;
   switch_inline_query?: string;
   switch_inline_query_current_chat?: string;
@@ -597,7 +597,7 @@ export interface KeyboardButton {
   request_contact?: boolean;
   request_location?: boolean;
   request_poll?: KeyboardButtonPollType;
-  web_app?: WebAppInfo;
+  web_app?: IWebAppInfo;
 }
 
 export interface IInlineKeyboardMarkup {
@@ -640,7 +640,7 @@ export interface ISendMessage {
     | IForceReply;
 }
 
-// This object represents the contents of a file to be uploaded. 
+// This object represents the contents of a file to be uploaded.
 // Must be posted using multipart/form-data in the usual way that files are uploaded via the browser.
 export type IInputFile = File;
 
@@ -659,4 +659,84 @@ export interface ISendPhoto {
     | IReplyKeyboardMarkup
     | IReplyKeyboardRemove
     | IForceReply;
+}
+
+export interface IGetChatMenuButton {
+  chat_id?: number;
+}
+
+export interface IMenuButtonCommands {
+  type: "commands";
+}
+
+export interface IMenuButtonWebApp {
+  type: "web_app";
+  text: string;
+  web_app: IWebAppInfo;
+}
+
+export interface IMenuButtonDefault {
+  type: "default";
+}
+
+export type IMenuButton =
+  | IMenuButtonCommands
+  | IMenuButtonWebApp
+  | IMenuButtonDefault;
+
+export interface ISetChatMenuButton {
+  chat_id?: number;
+  menu_button?: IMenuButton; // A JSON-serialized object for the bot's new menu button. Defaults to MenuButtonDefault
+}
+
+export interface IBotCommand {
+  command: string;
+  description: string;
+}
+
+export interface BotCommandScopeDefault {
+  type: "default";
+}
+
+export interface BotCommandScopeAllPrivateChats {
+  type: "all_private_chats";
+}
+
+export interface BotCommandScopeAllGroupChats {
+  type: "all_group_chats";
+}
+
+export interface BotCommandScopeAllChatAdministrators {
+  type: "all_chat_administrators";
+}
+
+export interface BotCommandScopeChat {
+  type: "chat";
+  chat_id: number | string;
+}
+
+export interface BotCommandScopeChatAdministrators {
+  type: "chat_administrators";
+  chat_id: number | string;
+}
+
+export interface BotCommandScopeChatMember {
+  type: "chat_member";
+  chat_id: number | string;
+  user_id: number;
+}
+
+export type IBotCommandScope =
+  | BotCommandScopeDefault
+  | BotCommandScopeAllPrivateChats
+  | BotCommandScopeAllGroupChats
+  | BotCommandScopeAllChatAdministrators
+  | BotCommandScopeChat
+  | BotCommandScopeChatAdministrators
+  | BotCommandScopeChatMember;
+
+export interface ISetMyCommands {
+  commands: IBotCommand[];
+  scope?: IBotCommandScope;
+  language_code?: string;
 }

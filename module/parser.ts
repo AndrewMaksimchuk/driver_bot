@@ -1,6 +1,6 @@
 import type {
-  Folder,
   DirEntry,
+  Folder,
   ParserObject,
   PipeSecond,
 } from "./type/index.ts";
@@ -8,7 +8,7 @@ import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.22-alpha/deno-dom-w
 import readFile from "./readFile.ts";
 
 const handler = (
-  dirEntry: DirEntry
+  dirEntry: DirEntry,
 ): Omit<ParserObject, "header"> | undefined => {
   const page = readFile(dirEntry.path);
 

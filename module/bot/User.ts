@@ -1,25 +1,26 @@
 import db from "./database.ts";
 import dbTables, {
-  usersColumns,
-  TTrafficRuleRow,
-  usersColumnsKeys,
-  TUserRow,
-  TTestPdrRow,
+  IRoadSign,
+  roadKeys,
   TMedicineRow,
   TRoadSign,
-  roadKeys,
-  IRoadSign,
+  TTestPdrRow,
+  TTrafficRuleRow,
+  TUserRow,
+  usersColumns,
+  usersColumnsKeys,
 } from "./databaseTables.ts";
-import { IUpdate, IUser, IMessage } from "./bot_api_types.ts";
+import { IMessage, IUpdate, IUser } from "./bot_api_types.ts";
 import { pipe } from "https://deno.land/x/ramda@v0.27.2/mod.ts";
 import { sendMessage, sendPhoto } from "./bot_api_methods.ts";
 import {
-  setRandomNumberFromRange,
   getImage,
   getRandomRow,
+  setRandomNumberFromRange,
   tupleToObject,
-} from "./helpers.ts";
-import Store from './Store.ts';
+} from "./helpers/index.ts";
+import Store from "./Store.ts";
+import { userSettings } from "./settings.ts";
 
 // FIXME: all tuple conver to object
 
@@ -45,7 +46,7 @@ const arrToObj = (user: TUserRow) =>
       ...previusValue,
       [usersColumnsKeys[currentIndex]]: currentValue,
     }),
-    {}
+    {},
   ) as IUser;
 
 const mapArrToObjUser = (users: TUserRow[]) => users.map(arrToObj);
@@ -55,10 +56,37 @@ const getAllUsers = () => {
   return mapArrToObjUser(users);
 };
 
+/**
+ * Send to user some selected road sign
+ */
+const sendRoadSign = async (user: IUser) => {
+  const roadSign = getRoadSign();
+
+  if (roadSign.file_id) {
+    // TODO: Check if send photo success
+    return await sendPhoto({
+      chat_id: user.id,
+      photo: roadSign.file_id,
+      caption: `${roadSign.header}\n${roadSign.description}`,
+    });
+  }
+
+  const file = await getImage(roadSign.photo_name);
+  if (!file) return;
+
+  const response = await sendPhoto({
+    chat_id: user.id,
+    photo: file,
+    caption: roadSign.description,
+  });
+
+  if (response.ok === true) updateRoadSignFileId(response.result, roadSign);
+};
+
 const sendMessageForAll = (text: string) =>
-  getAllUsers().forEach((user) => {
-    sendMessage({ chat_id: user.id, text });
-    sendRoadSign(user);
+  getAllUsers().forEach(async (user) => {
+    await sendMessage({ chat_id: user.id, text });
+    await sendRoadSign(user);
   });
 
 const getTrafficRule = () => {
@@ -104,33 +132,6 @@ const updateRoadSignFileId = (message: IMessage, roadSign: IRoadSign) => {
   }
 };
 
-/**
- * Send to user some selected road sign
- */
-const sendRoadSign = async (user: IUser) => {
-  const roadSign = getRoadSign();
-
-  if (roadSign.file_id) {
-    // TODO: Check if send photo success
-    return await sendPhoto({
-      chat_id: user.id,
-      photo: roadSign.file_id,
-      caption: roadSign.description,
-    });
-  }
-
-  const file = await getImage(roadSign.photo_name);
-  if (!file) return;
-
-  const response = await sendPhoto({
-    chat_id: user.id,
-    photo: file,
-    caption: roadSign.description,
-  });
-
-  if (response.ok === true) updateRoadSignFileId(response.result, roadSign);
-};
-
 // TODO: send random road marking with description
 // const sendRoadMarking = () => '';
 
@@ -138,8 +139,7 @@ const getTestPdr = () => {
   const tests = db.selectAll<TTestPdrRow>(dbTables.tests_pdr);
   const randomIndex = setRandomNumberFromRange(tests.length);
   const test = tests[randomIndex];
-  return `Питання\n${test[2]}\n${test[3]}`;
-  // return `Питання №${test[1]}\n${test[2]}\n${test[3]}`;
+  return `ПИТАННЯ\n${test[2]}\n${test[3]}`;
 };
 
 const sendTestPdr = () => sendMessageForAll(getTestPdr());
@@ -163,10 +163,15 @@ const concatenateTextMessages = (messages: string[]) =>
  * Send multiple text message in one big message
  */
 const sendTogether = () => {
-  const sentence = [getTrafficRule(), getTestPdr(), getMedicineItem()];
+  const sentence = [];
+
+  if (userSettings.trafficRule) sentence.push(getTrafficRule());
+  if (userSettings.testPdr) sentence.push(getTestPdr());
+  if (userSettings.medicine) sentence.push(getMedicineItem());
+
   const text = concatenateTextMessages(sentence);
   sendMessageForAll(text);
-}
+};
 
 export default {
   getNewUsers,

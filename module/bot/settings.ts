@@ -7,3 +7,9 @@ export const imagesPath = join(publicPath, "images");
 const TOKEN = Deno.env.get("DRIVER_BOT");
 export const DATABASE = Deno.env.get("DATABASE");
 export const URL_BASE = `https://api.telegram.org/bot${TOKEN}/`;
+
+export const userSettings = {
+  trafficRule: true,
+  testPdr: true,
+  medicine: false,
+};
