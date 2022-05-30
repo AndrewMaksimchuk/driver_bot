@@ -6,5 +6,7 @@ import setKeyValueToString from "./setKeyValueToString.ts";
 export default <T>(url: URL, query: T): void => {
   const setQueryParametersHandler = ([key, value]: [string, string]) =>
     url.searchParams.set(key, value);
-  Object.entries(setKeyValueToString(query)).forEach(setQueryParametersHandler);
+  Object.entries<string>(setKeyValueToString(query)).forEach(
+    setQueryParametersHandler,
+  );
 };

@@ -13,3 +13,8 @@ export const userSettings = {
   testPdr: true,
   medicine: false,
 };
+
+export const botCommands = {
+  start: "/start",
+  unsubscribe: "/unsubscribe",
+};

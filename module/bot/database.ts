@@ -84,6 +84,18 @@ class Sqlite {
     return this.setQuery(query);
   }
 
+  public deleteBy(
+    table: string,
+    columnName: string,
+    columnValue: string | number,
+  ) {
+    const query = `
+      DELETE FROM ${table}
+      WHERE ${columnName} = ${columnValue};
+    `;
+    return this.setQuery(query);
+  }
+
   public updateColumn(params: IUpdateColumn) {
     const query = `
     UPDATE ${params.table}

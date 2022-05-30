@@ -690,8 +690,8 @@ export interface ISetChatMenuButton {
 }
 
 export interface IBotCommand {
-  command: string;
-  description: string;
+  command: string; // 1-32 characters
+  description: string; // 1-256 characters
 }
 
 export interface BotCommandScopeDefault {

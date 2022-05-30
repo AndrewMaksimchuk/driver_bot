@@ -10,8 +10,7 @@ import dbTables, {
   usersColumns,
   usersColumnsKeys,
 } from "./databaseTables.ts";
-import { IMessage, IUpdate, IUser } from "./bot_api_types.ts";
-import { pipe } from "https://deno.land/x/ramda@v0.27.2/mod.ts";
+import { IMessage, IUser } from "./bot_api_types.ts";
 import { sendMessage, sendPhoto } from "./bot_api_methods.ts";
 import {
   getImage,
@@ -24,21 +23,11 @@ import { userSettings } from "./settings.ts";
 
 // FIXME: all tuple conver to object
 
-const isNewUser = (updateItem: IUpdate) =>
-  updateItem.message?.text === "/start";
-
-const getUserData = (updateItem: IUpdate) => updateItem.message?.from;
-
-const getNewUsers = (result: IUpdate[]) =>
-  result.filter(isNewUser).map(getUserData).filter(Boolean) as IUser[];
-
 const addNewUsers = (users: IUser[]) => {
   const columns = Object.keys(usersColumns);
   const values = users.map((user) => Object.values(user));
   return db.insert(dbTables.users, columns, values);
 };
-
-const setNewUsers = pipe(getNewUsers, addNewUsers);
 
 const arrToObj = (user: TUserRow) =>
   user.reduce(
@@ -67,7 +56,11 @@ const sendRoadSign = async (user: IUser) => {
     return await sendPhoto({
       chat_id: user.id,
       photo: roadSign.file_id,
-      caption: `${roadSign.header}\n${roadSign.description}`,
+      caption: `${roadSign.header.toLocaleUpperCase}\n${roadSign.description}`
+        .slice(
+          0,
+          1024,
+        ),
     });
   }
 
@@ -97,10 +90,6 @@ const getTrafficRule = () => {
 };
 
 const sendTrafficRule = () => sendMessageForAll(getTrafficRule());
-
-// TODO: Delete user from database
-// Unsubscribe
-// const unsubscribe = () => ;
 
 /**
  * Get road sign from database or if exist in store from store
@@ -173,13 +162,18 @@ const sendTogether = () => {
   sendMessageForAll(text);
 };
 
+/**
+ * Delete user from database
+ */
+const unsubscribe = (userId: number) => db.deleteById(dbTables.users, userId);
+
 export default {
-  getNewUsers,
-  setNewUsers,
   getAllUsers,
   sendTrafficRule,
   sendRoadSign,
   sendTestPdr,
   sendTogether,
   sendMedicineItem,
+  unsubscribe,
+  addNewUsers,
 };

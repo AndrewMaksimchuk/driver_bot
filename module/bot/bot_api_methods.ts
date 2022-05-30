@@ -86,18 +86,17 @@ export const sendPhoto = async (query: ISendPhoto) => {
 // deleteChatStickerSet
 // answerCallbackQuery
 
-// setMyCommands
-// export const setMyCommands = async (query: ISetMyCommands) => {
-//   interface TPreparedQuery {
-//     commands: string;
-//     scope?: string;
-//     language_code?: string;
-//   }
+/** setMyCommands */
+export const setMyCommands = async (query: ISetMyCommands) => {
+  interface TPreparedQuery {
+    commands: string;
+    scope?: string;
+    language_code?: string;
+  }
 
-//   const preparedQuery: TPreparedQuery = setKeyValueToString(query);
-
-//   return await httpClient.get(setUrl("setMyCommands", preparedQuery));
-// };
+  const preparedQuery = setKeyValueToString(query);
+  return await httpClient.get(setUrl("setMyCommands", preparedQuery));
+};
 
 // deleteMyCommands
 // getMyCommands
