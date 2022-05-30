@@ -146,15 +146,11 @@ const getMedicineItem = () => {
 /** */
 const sendMedicineItem = () => sendMessageForAll(getMedicineItem());
 
-/**
- * Concatenate text with another text
- */
+/** Concatenate text with another text. */
 const concatenateTextMessages = (messages: string[]) =>
   messages.reduce((prev, curr) => `${prev}\n\n\n${curr}`, "");
 
-/**
- * Send multiple text message in one big message
- */
+/** Send multiple text message in one big message. */
 const sendTogether = () => {
   const sentence = [];
 
@@ -166,9 +162,7 @@ const sendTogether = () => {
   sendMessageForAll(text);
 };
 
-/**
- * Delete user from database
- */
+/** Delete user from database. */
 const unsubscribe = (userId: number) => db.deleteById(dbTables.users, userId);
 
 export default {
