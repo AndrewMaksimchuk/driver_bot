@@ -8,7 +8,7 @@ import serialized from "./serialized.ts";
 import tupleToObject from "./tupleToObject.ts";
 import setQueryParameters from "./setQueryParameters.ts";
 import setUrl from "./setUrl.ts";
-import truncationText from './truncationText.ts';
+import truncationText from "./truncationText.ts";
 
 export {
   getFile,
@@ -20,6 +20,6 @@ export {
   setQueryParameters,
   setRandomNumberFromRange,
   setUrl,
-  tupleToObject,
   truncationText,
+  tupleToObject,
 };

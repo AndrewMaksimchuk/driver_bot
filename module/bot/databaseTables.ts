@@ -60,7 +60,7 @@ export const trafficRulesColumns = {
   id: "INTEGER PRIMARY KEY AUTOINCREMENT",
   header: "TEXT NOT NULL",
   text: "TEXT NOT NULL",
-  updated_day:	"INTEGER",
+  updated_day: "INTEGER",
 };
 export interface TTrafficRule {
   id: number;
@@ -68,7 +68,12 @@ export interface TTrafficRule {
   text: string;
   updated_day: number | null;
 }
-export type TTrafficRuleRow = [id_0: number, header_1: string, text_2: string, updated_day_3: number];
+export type TTrafficRuleRow = [
+  id_0: number,
+  header_1: string,
+  text_2: string,
+  updated_day_3: number,
+];
 db.createTable(tables.traffic_rules, trafficRulesColumns);
 
 /**
@@ -80,7 +85,7 @@ export interface ITestPdr {
   qustion: string;
   answer: string;
   // images: string[] | null;
-  updated_day: number | null;  
+  updated_day: number | null;
 }
 
 export type TTestPdrRow = [
@@ -98,7 +103,7 @@ const testPdrColumns: Record<keyof ITestPdr, string> = {
   qustion: "TEXT NOT NULL",
   answer: "TEXT NOT NULL",
   // images: "TEXT", // as json in string type
-  updated_day:	"INTEGER",
+  updated_day: "INTEGER",
 };
 
 db.createTable(tables.tests_pdr, testPdrColumns);
@@ -156,7 +161,7 @@ const roadSignColumns: Record<keyof IRoadSign, string> = {
   description: "TEXT NOT NULL",
   file_id: "TEXT UNIQUE",
   photo_name: "TEXT NOT NULL",
-  updated_day:	"INTEGER",
+  updated_day: "INTEGER",
 };
 
 db.createTable(tables.road_signs, roadSignColumns);

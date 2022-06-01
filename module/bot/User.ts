@@ -57,7 +57,8 @@ const getAllUsers = () => {
 const sendRoadSign = async (user: IUser) => {
   const roadSign = getRoadSign();
 
-  const caption = `${roadSign.header.toUpperCase()}\n${roadSign.description.trim()}`;
+  const caption =
+    `${roadSign.header.toUpperCase()}\n${roadSign.description.trim()}`;
 
   if (roadSign.file_id) {
     return await sendPhoto({
@@ -88,7 +89,10 @@ const sendMessageForAll = (text: string) =>
 
 /** Get random selected traffic rule. */
 const getTrafficRule = () => {
-  const rule = getRandomRow<TTrafficRuleRow>(dbTables.traffic_rules, currentDay);
+  const rule = getRandomRow<TTrafficRuleRow>(
+    dbTables.traffic_rules,
+    currentDay,
+  );
   return `${rule[1]}\n${rule[2]}`;
 };
 

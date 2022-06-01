@@ -11,7 +11,16 @@ export interface IUpdateColumn {
   value: string | number;
 }
 
-type TOperators = '=' | '>' | '<' | '>=' | '<=' | '<>' | 'BETWEEN' | 'LIKE' | 'IN';
+type TOperators =
+  | "="
+  | ">"
+  | "<"
+  | ">="
+  | "<="
+  | "<>"
+  | "BETWEEN"
+  | "LIKE"
+  | "IN";
 
 class Sqlite {
   private db: DB;
@@ -113,7 +122,12 @@ class Sqlite {
   }
 
   // public selectAllWhere<T extends unknown[]>(table: TTableList, columnNane: string, columnValue: string | number, operator: TOperators = "=") {
-  public selectAllWhere<T extends unknown[]>(table: string, columnNane: string, columnValue: string | number, operator: TOperators = "=") {
+  public selectAllWhere<T extends unknown[]>(
+    table: string,
+    columnNane: string,
+    columnValue: string | number,
+    operator: TOperators = "=",
+  ) {
     const query = `
     SELECT *
     FROM ${table}

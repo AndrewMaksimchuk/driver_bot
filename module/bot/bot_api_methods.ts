@@ -8,7 +8,11 @@ import type {
   IUpdate,
   IUser,
 } from "./bot_api_types.ts";
-import { setKeyValueToString, setUrl, truncationText } from "./helpers/index.ts";
+import {
+  setKeyValueToString,
+  setUrl,
+  truncationText,
+} from "./helpers/index.ts";
 import httpClient from "./httpClient.ts";
 
 /** getMe */
@@ -26,7 +30,7 @@ export const sendMessage = async (query: ISendMessage) => {
   const maxTextLength = 4096;
   query.text = truncationText(query.text, maxTextLength);
   return await httpClient.get(setUrl("sendMessage", query));
-}
+};
 
 /** sendPhoto */
 export const sendPhoto = async (query: ISendPhoto) => {
@@ -34,7 +38,8 @@ export const sendPhoto = async (query: ISendPhoto) => {
   const body = new FormData();
   body.append("chat_id", query.chat_id.toString());
   body.append("photo", query.photo);
-  query.caption && body.append("caption", truncationText(query.caption, maxCaptionLength));
+  query.caption &&
+    body.append("caption", truncationText(query.caption, maxCaptionLength));
   return await httpClient.post(setUrl("sendPhoto"), body);
 };
 
