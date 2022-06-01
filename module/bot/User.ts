@@ -21,6 +21,8 @@ import {
 import Store from "./Store.ts";
 import { userSettings } from "./settings.ts";
 
+const currentDay = (new Date()).getDay();
+
 // FIXME: all tuple conver to object
 
 /** Add new user data to database. */
@@ -55,7 +57,7 @@ const getAllUsers = () => {
 const sendRoadSign = async (user: IUser) => {
   const roadSign = getRoadSign();
 
-  const caption = roadSign.description.trim().slice(0, 1024); // FIXME: Bag with 'header' property, don`t show in caption in telegram app
+  const caption = `${roadSign.header.toUpperCase()}\n${roadSign.description.trim()}`;
 
   if (roadSign.file_id) {
     return await sendPhoto({
@@ -71,7 +73,7 @@ const sendRoadSign = async (user: IUser) => {
   const response = await sendPhoto({
     chat_id: user.id,
     photo: file,
-    caption: roadSign.description,
+    caption,
   });
 
   if (response.ok === true) updateRoadSignFileId(response.result, roadSign);
@@ -86,9 +88,7 @@ const sendMessageForAll = (text: string) =>
 
 /** Get random selected traffic rule. */
 const getTrafficRule = () => {
-  const rules = db.selectAll<TTrafficRuleRow>(dbTables.traffic_rules);
-  const randomIndex = setRandomNumberFromRange(rules.length);
-  const rule = rules[randomIndex];
+  const rule = getRandomRow<TTrafficRuleRow>(dbTables.traffic_rules, currentDay);
   return `${rule[1]}\n${rule[2]}`;
 };
 
@@ -98,7 +98,7 @@ const sendTrafficRule = () => sendMessageForAll(getTrafficRule());
 /** Get road sign from database or if exist in store from store. */
 const getRoadSign = () => {
   if (Store.get.sign) return Store.get.sign;
-  const roadSign = getRandomRow<TRoadSign>(dbTables.road_signs);
+  const roadSign = getRandomRow<TRoadSign>(dbTables.road_signs, currentDay); // Some bug with use type union => Argument of type 'string' is not assignable to parameter of type '"bot" | "users" | "traffic_rules" | "tests_pdr" | "medicine" | "road_signs" | "road_marking"'.deno-ts(2345)
   const sign = tupleToObject<IRoadSign>(roadSign, roadKeys);
   Store.set.sign = sign;
   return sign;
@@ -126,10 +126,8 @@ const updateRoadSignFileId = (message: IMessage, roadSign: IRoadSign) => {
 
 /** */
 const getTestPdr = () => {
-  const tests = db.selectAll<TTestPdrRow>(dbTables.tests_pdr);
-  const randomIndex = setRandomNumberFromRange(tests.length);
-  const test = tests[randomIndex];
-  return `ПИТАННЯ\n${test[2]}\n${test[3]}`;
+  const test = getRandomRow<TTestPdrRow>(dbTables.tests_pdr, currentDay);
+  return `ПИТАННЯ\n${test[1]}\n${test[2]}`;
 };
 
 /** */

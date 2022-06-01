@@ -1,14 +1,17 @@
 import { DB } from "https://deno.land/x/sqlite@v3.4.0/mod.ts";
 import { DATABASE } from "./settings.ts";
+// import type { TTableList } from './databaseTables.ts';
 
 type TTableColumnList = Record<string, string>;
 
-interface IUpdateColumn {
+export interface IUpdateColumn {
   table: string;
   id: string | number;
   column: string;
   value: string | number;
 }
+
+type TOperators = '=' | '>' | '<' | '>=' | '<=' | '<>' | 'BETWEEN' | 'LIKE' | 'IN';
 
 class Sqlite {
   private db: DB;
@@ -96,17 +99,27 @@ class Sqlite {
     return this.setQuery(query);
   }
 
-  public updateColumn(params: IUpdateColumn) {
+  public updateColumn<T extends unknown[]>(params: IUpdateColumn) {
     const query = `
     UPDATE ${params.table}
     SET ${params.column} = '${params.value}'
     WHERE id = ${params.id}; 
     `;
-    return this.setQuery(query);
+    return this.setQuery<T>(query);
   }
 
   public close() {
     this.db.close();
+  }
+
+  // public selectAllWhere<T extends unknown[]>(table: TTableList, columnNane: string, columnValue: string | number, operator: TOperators = "=") {
+  public selectAllWhere<T extends unknown[]>(table: string, columnNane: string, columnValue: string | number, operator: TOperators = "=") {
+    const query = `
+    SELECT *
+    FROM ${table}
+    WHERE ${columnNane} ${operator} ${columnValue} OR ${columnNane} IS NULL;
+    `;
+    return this.setQuery<T>(query);
   }
 }
 

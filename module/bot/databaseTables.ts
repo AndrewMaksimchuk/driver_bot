@@ -13,6 +13,8 @@ const tables = {
   road_marking: "road_marking",
 };
 
+export type TTableList = keyof typeof tables;
+
 export default tables;
 
 /* CREATE TABLE IF NOT EXIST */
@@ -58,13 +60,15 @@ export const trafficRulesColumns = {
   id: "INTEGER PRIMARY KEY AUTOINCREMENT",
   header: "TEXT NOT NULL",
   text: "TEXT NOT NULL",
+  updated_day:	"INTEGER",
 };
 export interface TTrafficRule {
   id: number;
   header: string;
   text: string;
+  updated_day: number | null;
 }
-export type TTrafficRuleRow = [id_0: number, header_1: string, text_2: string];
+export type TTrafficRuleRow = [id_0: number, header_1: string, text_2: string, updated_day_3: number];
 db.createTable(tables.traffic_rules, trafficRulesColumns);
 
 /**
@@ -72,26 +76,29 @@ db.createTable(tables.traffic_rules, trafficRulesColumns);
  */
 export interface ITestPdr {
   id: number;
-  number: number;
+  // number: number;
   qustion: string;
   answer: string;
-  images: string[] | null;
+  // images: string[] | null;
+  updated_day: number | null;  
 }
 
 export type TTestPdrRow = [
   id_0: number,
-  number_1: number,
-  qustion_2: string,
-  answer_3: string,
-  images_4: string, // as json in string type
+  // number_1: number,
+  qustion_1: string,
+  answer_2: string,
+  // images_4: string, // as json in string type
+  updated_day_3: number,
 ];
 
 const testPdrColumns: Record<keyof ITestPdr, string> = {
   id: "INTEGER PRIMARY KEY AUTOINCREMENT",
-  number: "INTEGER NOT NULL UNIQUE", // this column need to be with unique value
+  // number: "INTEGER NOT NULL UNIQUE", // this column need to be with unique value
   qustion: "TEXT NOT NULL",
   answer: "TEXT NOT NULL",
-  images: "TEXT", // as json in string type
+  // images: "TEXT", // as json in string type
+  updated_day:	"INTEGER",
 };
 
 db.createTable(tables.tests_pdr, testPdrColumns);
@@ -119,6 +126,7 @@ export interface IRoadSign {
   description: string;
   file_id: string | null;
   photo_name: string;
+  updated_day: number | null;
 }
 
 export type TRoadSign = [
@@ -128,6 +136,7 @@ export type TRoadSign = [
   description_3: string,
   file_id_4: string,
   photo_name_5: string,
+  updated_day_6: number,
 ];
 
 export const roadKeys = [
@@ -137,6 +146,7 @@ export const roadKeys = [
   "description",
   "file_id",
   "photo_name",
+  "updated_day",
 ];
 
 const roadSignColumns: Record<keyof IRoadSign, string> = {
@@ -146,6 +156,7 @@ const roadSignColumns: Record<keyof IRoadSign, string> = {
   description: "TEXT NOT NULL",
   file_id: "TEXT UNIQUE",
   photo_name: "TEXT NOT NULL",
+  updated_day:	"INTEGER",
 };
 
 db.createTable(tables.road_signs, roadSignColumns);
