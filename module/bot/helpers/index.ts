@@ -9,6 +9,7 @@ import tupleToObject from "./tupleToObject.ts";
 import setQueryParameters from "./setQueryParameters.ts";
 import setUrl from "./setUrl.ts";
 import truncationText from "./truncationText.ts";
+import updateFileId from "./updateFileId.ts";
 
 export {
   getFile,
@@ -22,4 +23,5 @@ export {
   setUrl,
   truncationText,
   tupleToObject,
+  updateFileId,
 };

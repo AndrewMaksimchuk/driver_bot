@@ -49,7 +49,7 @@ export type TUserRow = [
   first_name: string,
   last_name?: string,
   username?: string,
-  language_code?: string,
+  language_code?: string
 ];
 db.createTable(tables.users, usersColumns);
 
@@ -72,7 +72,7 @@ export type TTrafficRuleRow = [
   id_0: number,
   header_1: string,
   text_2: string,
-  updated_day_3: number,
+  updated_day_3: number
 ];
 db.createTable(tables.traffic_rules, trafficRulesColumns);
 
@@ -81,7 +81,6 @@ db.createTable(tables.traffic_rules, trafficRulesColumns);
  */
 export interface ITestPdr {
   id: number;
-  // number: number;
   qustion: string;
   answer: string;
   // images: string[] | null;
@@ -90,17 +89,15 @@ export interface ITestPdr {
 
 export type TTestPdrRow = [
   id_0: number,
-  // number_1: number,
   qustion_1: string,
   answer_2: string,
   // images_4: string, // as json in string type
-  updated_day_3: number,
+  updated_day_3: number
 ];
 
 const testPdrColumns: Record<keyof ITestPdr, string> = {
   id: "INTEGER PRIMARY KEY AUTOINCREMENT",
-  // number: "INTEGER NOT NULL UNIQUE", // this column need to be with unique value
-  qustion: "TEXT NOT NULL",
+  qustion: "TEXT NOT NULL UNIQUE",
   answer: "TEXT NOT NULL",
   // images: "TEXT", // as json in string type
   updated_day: "INTEGER",
@@ -108,6 +105,9 @@ const testPdrColumns: Record<keyof ITestPdr, string> = {
 
 db.createTable(tables.tests_pdr, testPdrColumns);
 
+/**
+ * Table for medicine
+ */
 interface IMedicine {
   id: number;
   header: string;
@@ -124,6 +124,9 @@ const medicineColumns: Record<keyof IMedicine, string> = {
 
 db.createTable(tables.medicine, medicineColumns);
 
+/**
+ * Table for road sign
+ */
 export interface IRoadSign {
   id: number;
   header: string;
@@ -141,7 +144,7 @@ export type TRoadSign = [
   description_3: string,
   file_id_4: string,
   photo_name_5: string,
-  updated_day_6: number,
+  updated_day_6: number
 ];
 
 export const roadKeys = [
@@ -166,4 +169,47 @@ const roadSignColumns: Record<keyof IRoadSign, string> = {
 
 db.createTable(tables.road_signs, roadSignColumns);
 
-// TODO: create "road_marking" table
+/**
+ * Table for road marking
+ */
+export interface IRoadMark {
+  id: number;
+  header: string;
+  number: string;
+  description: string;
+  file_id: string | null;
+  photo_name: string;
+  updated_day: number | null;
+}
+
+export type TRoadMark = [
+  id_0: number,
+  header_1: string,
+  number_2: string,
+  description_3: string,
+  file_id_4: string,
+  photo_name_5: string,
+  updated_day_6: number
+];
+
+export const roadMarkingKeys = [
+  "id",
+  "header",
+  "number",
+  "description",
+  "file_id",
+  "photo_name",
+  "updated_day",
+];
+
+const roadMarkingColumns: Record<keyof IRoadMark, string> = {
+  id: "INTEGER PRIMARY KEY AUTOINCREMENT",
+  header: "TEXT NOT NULL",
+  number: "TEXT NOT NULL UNIQUE",
+  description: "TEXT NOT NULL",
+  file_id: "TEXT UNIQUE",
+  photo_name: "TEXT NOT NULL",
+  updated_day: "INTEGER",
+};
+
+db.createTable(tables.road_marking, roadMarkingColumns);
