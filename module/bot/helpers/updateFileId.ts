@@ -1,5 +1,5 @@
 import type { IMessage } from "../bot_api_types.ts";
-import type { IRoadSign, IRoadMark, TTableList } from "../databaseTables.ts";
+import type { IRoadMark, IRoadSign, TTableList } from "../databaseTables.ts";
 import db from "../database.ts";
 
 type TItem = IRoadSign | IRoadMark;

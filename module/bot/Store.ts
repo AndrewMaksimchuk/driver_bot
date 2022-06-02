@@ -1,4 +1,4 @@
-import { IRoadSign, IRoadMark } from "./databaseTables.ts";
+import { IRoadMark, IRoadSign } from "./databaseTables.ts";
 
 interface IState {
   sign: IRoadSign | undefined;

@@ -49,7 +49,7 @@ export type TUserRow = [
   first_name: string,
   last_name?: string,
   username?: string,
-  language_code?: string
+  language_code?: string,
 ];
 db.createTable(tables.users, usersColumns);
 
@@ -72,7 +72,7 @@ export type TTrafficRuleRow = [
   id_0: number,
   header_1: string,
   text_2: string,
-  updated_day_3: number
+  updated_day_3: number,
 ];
 db.createTable(tables.traffic_rules, trafficRulesColumns);
 
@@ -92,7 +92,7 @@ export type TTestPdrRow = [
   qustion_1: string,
   answer_2: string,
   // images_4: string, // as json in string type
-  updated_day_3: number
+  updated_day_3: number,
 ];
 
 const testPdrColumns: Record<keyof ITestPdr, string> = {
@@ -144,7 +144,7 @@ export type TRoadSign = [
   description_3: string,
   file_id_4: string,
   photo_name_5: string,
-  updated_day_6: number
+  updated_day_6: number,
 ];
 
 export const roadKeys = [
@@ -189,7 +189,7 @@ export type TRoadMark = [
   description_3: string,
   file_id_4: string,
   photo_name_5: string,
-  updated_day_6: number
+  updated_day_6: number,
 ];
 
 export const roadMarkingKeys = [

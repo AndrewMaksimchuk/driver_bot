@@ -1,16 +1,16 @@
 import db from "./database.ts";
 import dbTables, {
+  IRoadMark,
   IRoadSign,
   roadKeys,
   TMedicineRow,
+  TRoadMark,
   TRoadSign,
   TTestPdrRow,
   TTrafficRuleRow,
   TUserRow,
   usersColumns,
   usersColumnsKeys,
-  IRoadMark,
-  TRoadMark,
 } from "./databaseTables.ts";
 import type { IUser } from "./bot_api_types.ts";
 import { sendMessage, sendPhoto } from "./bot_api_methods.ts";
@@ -42,7 +42,7 @@ const arrToObj = (user: TUserRow) =>
       ...previusValue,
       [usersColumnsKeys[currentIndex]]: currentValue,
     }),
-    {}
+    {},
   ) as IUser;
 
 /** Convert array structure of database row to object shape. */
@@ -60,7 +60,8 @@ const getAllUsers = () => {
 const sendRoadSign = async (user: IUser) => {
   const roadSign = getRoadSign();
 
-  const caption = `${roadSign.header.toUpperCase()}\n${roadSign.description.trim()}`;
+  const caption =
+    `${roadSign.header.toUpperCase()}\n${roadSign.description.trim()}`;
 
   if (roadSign.file_id) {
     return await sendPhoto({
@@ -79,8 +80,9 @@ const sendRoadSign = async (user: IUser) => {
     caption,
   });
 
-  if (response.ok === true)
+  if (response.ok === true) {
     updateFileId(response.result, roadSign, "road_signs");
+  }
 };
 
 /** Send different message to all users in database. */
@@ -95,7 +97,7 @@ const sendMessageForAll = (text: string) =>
 const getTrafficRule = () => {
   const rule = getRandomRow<TTrafficRuleRow>(
     dbTables.traffic_rules,
-    currentDay
+    currentDay,
   );
   return `${rule[1]}\n${rule[2]}`;
 };
@@ -122,7 +124,8 @@ const getRoadMark = () => {
 const sendRoadMark = async (user: IUser) => {
   const roadMakr = getRoadMark();
 
-  const caption = `${roadMakr.header.toUpperCase()}\n${roadMakr.description.trim()}`;
+  const caption =
+    `${roadMakr.header.toUpperCase()}\n${roadMakr.description.trim()}`;
 
   if (roadMakr.file_id) {
     return await sendPhoto({
@@ -141,8 +144,9 @@ const sendRoadMark = async (user: IUser) => {
     caption,
   });
 
-  if (response.ok === true)
+  if (response.ok === true) {
     updateFileId(response.result, roadMakr, "road_marking");
+  }
 };
 
 /** Get random pdr test from database */
