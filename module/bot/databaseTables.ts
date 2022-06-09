@@ -44,7 +44,7 @@ export type TUserRow = [
   first_name: string,
   last_name?: string,
   username?: string,
-  language_code?: string
+  language_code?: string,
 ];
 db.createTable(tables.users, usersColumns);
 
@@ -65,7 +65,7 @@ export type TTrafficRuleRow = [
   id_0: number,
   header_1: string,
   text_2: string,
-  updated_day_3: number
+  updated_day_3: number,
 ];
 db.createTable(tables.traffic_rules, trafficRulesColumns);
 
@@ -89,7 +89,7 @@ export type TTestPdrRow = [
   theme_4: string | null,
   photo_name_5: string | null,
   item_6: number | null,
-  file_id_7: string | null
+  file_id_7: string | null,
 ];
 
 export const testKeys = [
@@ -151,7 +151,7 @@ export type TRoadSign = [
   description_3: string,
   file_id_4: string,
   photo_name_5: string,
-  updated_day_6: number
+  updated_day_6: number,
 ];
 
 export const roadKeys = [
@@ -194,7 +194,7 @@ export type TRoadMark = [
   description_3: string,
   file_id_4: string,
   photo_name_5: string,
-  updated_day_6: number
+  updated_day_6: number,
 ];
 
 export const roadMarkingKeys = [
@@ -235,7 +235,7 @@ export type TInscriptionsAndSymbolsRow = [
   description_2: string,
   photo_name_3: string,
   file_id_4: string | null,
-  updated_day_5: number | null
+  updated_day_5: number | null,
 ];
 
 export const inscriptionsAndSymbolsKeys = [

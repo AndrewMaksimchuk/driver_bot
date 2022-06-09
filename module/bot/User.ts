@@ -2,7 +2,9 @@ import db from "./database.ts";
 import dbTables, {
   IRoadMark,
   IRoadSign,
+  ITestPdr,
   roadKeys,
+  testKeys,
   TMedicineRow,
   TRoadMark,
   TRoadSign,
@@ -89,8 +91,9 @@ const sendRoadSign = async (user: IUser) => {
 const sendMessageForAll = (text: string) =>
   getAllUsers().forEach(async (user) => {
     await sendMessage({ chat_id: user.id, text });
-    await sendRoadSign(user);
-    await sendRoadMark(user);
+    if (userSettings.testPdr) await sendTestPdr(user);
+    if (userSettings.roadSign) await sendRoadSign(user);
+    if (userSettings.roadMark) await sendRoadMark(user);
   });
 
 /** Get random selected traffic rule. */
@@ -122,20 +125,20 @@ const getRoadMark = () => {
 
 /** Send random road marking */
 const sendRoadMark = async (user: IUser) => {
-  const roadMakr = getRoadMark();
+  const roadMark = getRoadMark();
 
   const caption =
-    `${roadMakr.header.toUpperCase()}\n${roadMakr.description.trim()}`;
+    `${roadMark.header.toUpperCase()}\n${roadMark.description.trim()}`;
 
-  if (roadMakr.file_id) {
+  if (roadMark.file_id) {
     return await sendPhoto({
       chat_id: user.id,
-      photo: roadMakr.file_id,
+      photo: roadMark.file_id,
       caption,
     });
   }
 
-  const file = await getImage(roadMakr.photo_name);
+  const file = await getImage(roadMark.photo_name);
   if (!file) return;
 
   const response = await sendPhoto({
@@ -145,18 +148,52 @@ const sendRoadMark = async (user: IUser) => {
   });
 
   if (response.ok === true) {
-    updateFileId(response.result, roadMakr, "road_marking");
+    updateFileId(response.result, roadMark, "road_marking");
   }
 };
 
 /** Get random pdr test from database */
 const getTestPdr = () => {
-  const test = getRandomRow<TTestPdrRow>(dbTables.tests_pdr, currentDay);
-  return `ПИТАННЯ\n${test[1]}\n${test[2]}`;
+  if (Store.get.test) return Store.get.test;
+  const testRow = getRandomRow<TTestPdrRow>(dbTables.tests_pdr, currentDay);
+  const test = tupleToObject<ITestPdr>(testRow, testKeys);
+  Store.set.test = test;
+  return test;
 };
 
 /** Send pdr test to users */
-const sendTestPdr = () => sendMessageForAll(getTestPdr());
+const sendTestPdr = async (user: IUser) => {
+  const testPdr = getTestPdr();
+
+  if (testPdr.photo_name) {
+    const caption = `ПИТАННЯ\n${testPdr.qustion}\n${testPdr.answer}`;
+
+    if (testPdr.file_id) {
+      return await sendPhoto({
+        chat_id: user.id,
+        photo: testPdr.file_id,
+        caption,
+      });
+    }
+
+    const file = await getImage(testPdr.photo_name);
+    if (!file) return;
+
+    const response = await sendPhoto({
+      chat_id: user.id,
+      photo: file,
+      caption,
+    });
+
+    if (response.ok === true) {
+      updateFileId(response.result, testPdr, "tests_pdr");
+    }
+    return;
+  }
+
+  const text = `ПИТАННЯ\n${testPdr.qustion}\n${testPdr.answer}`;
+  await sendMessage({ chat_id: user.id, text });
+};
 
 /** Get medicine item from database */
 const getMedicineItem = () => {
@@ -165,9 +202,6 @@ const getMedicineItem = () => {
   const medicineItem = items[randomIndex];
   return `${medicineItem[1]}\n${medicineItem[2]}`;
 };
-
-/** Send medicine item to users */
-const sendMedicineItem = () => sendMessageForAll(getMedicineItem());
 
 /** Concatenate text with another text. */
 const concatenateTextMessages = (messages: string[]) =>
@@ -178,7 +212,6 @@ const sendTogether = () => {
   const sentence = [];
 
   if (userSettings.trafficRule) sentence.push(getTrafficRule());
-  if (userSettings.testPdr) sentence.push(getTestPdr());
   if (userSettings.medicine) sentence.push(getMedicineItem());
 
   const text = concatenateTextMessages(sentence);
@@ -188,16 +221,8 @@ const sendTogether = () => {
 /** Delete user from database. */
 const unsubscribe = (userId: number) => db.deleteById(dbTables.users, userId);
 
-/** Send message with traffice rule to all users. */
-const sendTrafficRule = () => sendMessageForAll(getTrafficRule());
-
 export default {
-  getAllUsers,
-  sendTrafficRule,
-  sendRoadSign,
-  sendTestPdr,
   sendTogether,
-  sendMedicineItem,
   unsubscribe,
   addNewUsers,
 };

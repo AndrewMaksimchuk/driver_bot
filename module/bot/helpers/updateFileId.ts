@@ -1,8 +1,13 @@
 import type { IMessage } from "../bot_api_types.ts";
-import type { IRoadMark, IRoadSign, TTableList } from "../databaseTables.ts";
+import type {
+  IRoadMark,
+  IRoadSign,
+  ITestPdr,
+  TTableList,
+} from "../databaseTables.ts";
 import db from "../database.ts";
 
-type TItem = IRoadSign | IRoadMark;
+type TItem = IRoadSign | IRoadMark | ITestPdr;
 
 /** Update value of "file_id" column because this value is missing. */
 export default (message: IMessage, item: TItem, table: TTableList) => {

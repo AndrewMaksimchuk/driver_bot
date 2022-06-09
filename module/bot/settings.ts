@@ -12,6 +12,8 @@ export const userSettings = {
   trafficRule: true,
   testPdr: true,
   medicine: false,
+  roadSign: true,
+  roadMark: true,
 };
 
 export const botCommands = {

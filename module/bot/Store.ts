@@ -1,14 +1,16 @@
-import { IRoadMark, IRoadSign } from "./databaseTables.ts";
+import { IRoadMark, IRoadSign, ITestPdr } from "./databaseTables.ts";
 
 interface IState {
   sign: IRoadSign | undefined;
   mark: IRoadMark | undefined;
+  test: ITestPdr | undefined;
   rule: string | undefined;
 }
 
 const state: IState = {
   sign: undefined,
   mark: undefined,
+  test: undefined,
   rule: undefined,
 };
 
@@ -19,6 +21,9 @@ const Store = {
     },
     get mark() {
       return state.mark;
+    },
+    get test() {
+      return state.test;
     },
     get rule() {
       return state.rule;
@@ -31,6 +36,9 @@ const Store = {
     },
     set mark(newValue: IRoadMark) {
       state.mark = { ...newValue };
+    },
+    set test(newValue: ITestPdr) {
+      state.test = { ...newValue };
     },
     set rule(newValue: string) {
       state.rule = newValue;
