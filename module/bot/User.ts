@@ -13,6 +13,8 @@ import dbTables, {
   TUserRow,
   usersColumns,
   usersColumnsKeys,
+  ITrafficRule,
+  trafficRuleKeys,
 } from "./databaseTables.ts";
 import type { IUser } from "./bot_api_types.ts";
 import { sendMessage, sendPhoto } from "./bot_api_methods.ts";
@@ -27,8 +29,6 @@ import Store from "./Store.ts";
 import { userSettings } from "./settings.ts";
 
 const currentDay = new Date().getDay();
-
-// FIXME: all tuple conver to object
 
 /** Add new user data to database. */
 const addNewUsers = (users: IUser[]) => {
@@ -98,17 +98,23 @@ const sendMessageForAll = (text: string) =>
 
 /** Get random selected traffic rule. */
 const getTrafficRule = () => {
-  const rule = getRandomRow<TTrafficRuleRow>(
+  if (Store.get.rule) {
+    return `${Store.get.rule.header}\n${Store.get.rule.text}`;
+  }
+
+  const ruleRow = getRandomRow<TTrafficRuleRow>(
     dbTables.traffic_rules,
     currentDay,
   );
-  return `${rule[1]}\n${rule[2]}`;
+
+  const rule = tupleToObject<ITrafficRule>(ruleRow, trafficRuleKeys);
+  return `${rule.header}\n${rule.text}`;
 };
 
 /** Get road sign from database or if exist in store from store. */
 const getRoadSign = () => {
   if (Store.get.sign) return Store.get.sign;
-  const roadSign = getRandomRow<TRoadSign>(dbTables.road_signs, currentDay); // FIXME: Some bug with use type union => Argument of type 'string' is not assignable to parameter of type '"bot" | "users" | "traffic_rules" | "tests_pdr" | "medicine" | "road_signs" | "road_marking"'.deno-ts(2345)
+  const roadSign = getRandomRow<TRoadSign>(dbTables.road_signs, currentDay);
   const sign = tupleToObject<IRoadSign>(roadSign, roadKeys);
   Store.set.sign = sign;
   return sign;

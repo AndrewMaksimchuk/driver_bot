@@ -1,10 +1,10 @@
-import { IRoadMark, IRoadSign, ITestPdr } from "./databaseTables.ts";
+import { IRoadMark, IRoadSign, ITestPdr, ITrafficRule } from "./databaseTables.ts";
 
 interface IState {
   sign: IRoadSign | undefined;
   mark: IRoadMark | undefined;
   test: ITestPdr | undefined;
-  rule: string | undefined;
+  rule: ITrafficRule | undefined;
 }
 
 const state: IState = {
@@ -32,15 +32,15 @@ const Store = {
 
   set: {
     set sign(newValue: IRoadSign) {
-      state.sign = { ...newValue };
+      state.sign = newValue;
     },
     set mark(newValue: IRoadMark) {
-      state.mark = { ...newValue };
+      state.mark = newValue;
     },
     set test(newValue: ITestPdr) {
-      state.test = { ...newValue };
+      state.test = newValue;
     },
-    set rule(newValue: string) {
+    set rule(newValue: ITrafficRule) {
       state.rule = newValue;
     },
   },

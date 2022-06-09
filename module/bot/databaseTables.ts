@@ -55,7 +55,7 @@ export const trafficRulesColumns = {
   text: "TEXT NOT NULL",
   updated_day: "INTEGER",
 };
-export interface TTrafficRule {
+export interface ITrafficRule {
   id: number;
   header: string;
   text: string;
@@ -67,13 +67,20 @@ export type TTrafficRuleRow = [
   text_2: string,
   updated_day_3: number,
 ];
+
+export const trafficRuleKeys = [
+  "id",
+  "header",
+  "text",
+  "updated_day",
+]
 db.createTable(tables.traffic_rules, trafficRulesColumns);
 
 /** Table for tests "tests_pdr" */
 export interface ITestPdr {
   id: number;
   qustion: string;
-  answer: string;
+  answer: string | null;
   updated_day: number | null;
   theme: string | null;
   photo_name: string | null;
@@ -84,7 +91,7 @@ export interface ITestPdr {
 export type TTestPdrRow = [
   id_0: number,
   qustion_1: string,
-  answer_2: string,
+  answer_2: string | null,
   updated_day_3: number,
   theme_4: string | null,
   photo_name_5: string | null,
@@ -106,7 +113,7 @@ export const testKeys = [
 const testPdrColumns: Record<keyof ITestPdr, string> = {
   id: "INTEGER PRIMARY KEY AUTOINCREMENT",
   qustion: "TEXT NOT NULL UNIQUE",
-  answer: "TEXT NOT NULL",
+  answer: "TEXT",
   updated_day: "INTEGER",
   theme: "TEXT",
   photo_name: "TEXT",
