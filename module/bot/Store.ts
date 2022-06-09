@@ -1,4 +1,9 @@
-import { IRoadMark, IRoadSign, ITestPdr, ITrafficRule } from "./databaseTables.ts";
+import {
+  IRoadMark,
+  IRoadSign,
+  ITestPdr,
+  ITrafficRule,
+} from "./databaseTables.ts";
 
 interface IState {
   sign: IRoadSign | undefined;

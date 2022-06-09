@@ -73,7 +73,7 @@ export const trafficRuleKeys = [
   "header",
   "text",
   "updated_day",
-]
+];
 db.createTable(tables.traffic_rules, trafficRulesColumns);
 
 /** Table for tests "tests_pdr" */

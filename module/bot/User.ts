@@ -3,9 +3,11 @@ import dbTables, {
   IRoadMark,
   IRoadSign,
   ITestPdr,
+  ITrafficRule,
   roadKeys,
   testKeys,
   TMedicineRow,
+  trafficRuleKeys,
   TRoadMark,
   TRoadSign,
   TTestPdrRow,
@@ -13,8 +15,6 @@ import dbTables, {
   TUserRow,
   usersColumns,
   usersColumnsKeys,
-  ITrafficRule,
-  trafficRuleKeys,
 } from "./databaseTables.ts";
 import type { IUser } from "./bot_api_types.ts";
 import { sendMessage, sendPhoto } from "./bot_api_methods.ts";
