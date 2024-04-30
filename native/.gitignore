@@ -1,0 +1,6 @@
+node_modules/
+
+pdr*
+!tsconfig.json
+!package.json
+!DRIVING.db
