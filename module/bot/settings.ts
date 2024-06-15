@@ -5,7 +5,13 @@ export const publicPath = join(cwd, "public");
 export const imagesPath = join(publicPath, "images");
 
 const TOKEN = Deno.env.get("DRIVER_BOT");
-export const DATABASE = Deno.env.get("DATABASE");
+if (!!TOKEN === false) {
+  console.log("[ ERROR   ]  DRIVER_BOT не встановлено!");
+  console.log("[ MESSAGE ]  Встановити в id телеграм бота.")
+  Deno.exit(0);
+}
+
+export const DATABASE = Deno.env.get("DATABASE") ?? join(cwd, "DRIVING.db");
 export const URL_BASE = `https://api.telegram.org/bot${TOKEN}/`;
 
 export const userSettings = {

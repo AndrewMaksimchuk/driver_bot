@@ -16,7 +16,7 @@ const setPath = () => {
   console.log("[ ERROR  ]  DRIVER_BOT_PATH not set!");
   console.log("            Must be directory of 'vodiy' project with road signs and descriptions to them.");
   console.log("            https://github.com/AndrewMaksimchuk/vodiy")
-  Deno.exit(1);
+  Deno.exit(0);
 }
 
 const path = setPath();

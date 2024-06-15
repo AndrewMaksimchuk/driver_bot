@@ -12,6 +12,9 @@ You can use next command in terminal:
 
 vodiy project source link: [https://github.com/AndrewMaksimchuk/vodiy](https://github.com/AndrewMaksimchuk/vodiy)
 
+For work with bot on telegram, need set environment  
+variable `DRIVER_BOT` to id of the bot.
+
 ## Database
 
 Used sqlite but file inself not included.  
