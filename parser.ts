@@ -1,4 +1,4 @@
-import { pipe } from "https://deno.land/x/ramda@v0.27.2/mod.ts";
+import pipe from "https://deno.land/x/ramda@v0.27.2/source/pipe.js";
 import input from "./module/core/input.ts";
 import processing from "./module/core/processing.ts";
 import output from "./module/core/output.ts";

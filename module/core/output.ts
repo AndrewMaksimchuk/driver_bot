@@ -4,4 +4,4 @@ export default (outputObject: PipeSecond) =>
   Deno.writeTextFile(
     "database.json",
     JSON.stringify({ roadSigns: outputObject }),
-  );
+  ).then(() => console.log("[ DONE ]"));

@@ -1,4 +1,4 @@
-import { pipe } from "https://deno.land/x/ramda@v0.27.2/mod.ts";
+import pipe from "https://deno.land/x/ramda@v0.27.2/source/pipe.js";
 import readDirectory from "./readDirectory.ts";
 import excludeDirectory from "./excludeDirectory.ts";
 import addPath from "./addPath.ts";
