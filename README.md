@@ -18,8 +18,9 @@ variable `DRIVER_BOT` to id of the bot.
 ## Database
 
 Used sqlite but file inself not included.  
-Need set environment variable `DATABASE` to  
+Need set environment variable `DRIVER_BOT_DATABASE` to  
 path to database file.
+Database file must have name **DRIVING.db**
 
 ## Images
 
@@ -33,3 +34,9 @@ in one executable file with database data.
 Result file name is `pdr_bun`.
 
 If run it, you will see in stdout a random rule.
+
+## Setup
+
+1. Set all environment variables
+2. Run command `make parser`, get information from vodiy project
+3. Now you can use application, run command `make bot`

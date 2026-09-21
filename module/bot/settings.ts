@@ -11,7 +11,7 @@ if (!!TOKEN === false) {
   Deno.exit(0);
 }
 
-export const DATABASE = Deno.env.get("DATABASE") ?? join(cwd, "DRIVING.db");
+export const DATABASE = Deno.env.get("DRIVER_BOT_DATABASE") ?? join(cwd, "DRIVING.db");
 export const URL_BASE = `https://api.telegram.org/bot${TOKEN}/`;
 
 export const userSettings = {
